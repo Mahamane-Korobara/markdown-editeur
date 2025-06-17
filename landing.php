@@ -18,8 +18,13 @@
             <a href="#fonctionalite">Fonctionnalités</a>
             <a href="#demo">Démonstration</a>
             <a href="#about">À propos</a>
-            <a href="index.php" class="cta-button">Lancer l'éditeur</a>
+            <a href="php/accueil.php" class="cta-button">Lancer l'éditeur</a>
+
+            <button id="themeToggle" title="Changer le thème">
+               <i class="fa-regular fa-sun icon"></i>
+            </button>
         </nav>
+
     </header>
 
     <main>
@@ -28,7 +33,7 @@
                 <h1>Transformez vos idées en contenu structuré</h1>
                 <p>Un éditeur Markdown moderne, intuitif et puissant pour tous vos besoins de rédaction</p>
                 <div class="cta-group">
-                    <a href="index.php" class="primary-button">
+                    <a href="php/accueil.php" class="primary-button">
                         <i class="fas fa-edit"></i>
                         Commencer à écrire
                     </a>
@@ -128,38 +133,54 @@
                                 <p>Vos documents toujours à jour sur tous vos appareils</p>
                             </div>
                         </div>
-                        <div class="benefit-item">
-                            <i class="fas fa-share-alt"></i>
-                            <div class="benefit-text">
-                                <h3>Collaboration en temps réel</h3>
-                                <p>Partagez et collaborez avec votre équipe</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="signup-form">
                     <div class="form-container">
-                        <h3>Rejoignez MarkEdit gratuitement</h3>
-                        <form action="#" class="animated-form">
-                            <div class="form-group">
-                                <input type="text" placeholder="Votre nom" required>
-                                <i class="fas fa-user"></i>
+                        <div id="signupForm" class="form-section active">
+                            <h3>Rejoignez MarkEdit gratuitement</h3>
+                            <form action="#" class="animated-form">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Votre nom" required>
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Votre email" required>
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Choisir un mot de passe" required>
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <button type="submit" class="signup-button">
+                                    <span>Créer mon compte</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </form>
+                            <div class="form-footer">
+                                <p>Déjà membre ? <a href="#" class="switch-form" data-form="login">Connexion</a></p>
                             </div>
-                            <div class="form-group">
-                                <input type="email" placeholder="Votre email" required>
-                                <i class="fas fa-envelope"></i>
+                        </div>
+
+                        <div id="loginForm" class="form-section">
+                            <h3>Connexion à MarkEdit</h3>
+                            <form action="#" class="animated-form">
+                                <div class="form-group">
+                                    <input type="email" placeholder="Votre email" required>
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Votre mot de passe" required>
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <button type="submit" class="signup-button">
+                                    <span>Se connecter</span>
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </button>
+                            </form>
+                            <div class="form-footer">
+                                <p>Pas encore de compte ? <a href="#" class="switch-form" data-form="signup">S'inscrire</a></p>
                             </div>
-                            <div class="form-group">
-                                <input type="password" placeholder="Choisir un mot de passe" required>
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <button type="submit" class="signup-button">
-                                <span>Créer mon compte</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </form>
-                        <div class="form-footer">
-                            <p>Déjà membre ? <a href="#">Connexion</a></p>
                         </div>
                     </div>
                 </div>
@@ -170,7 +191,7 @@
             <div class="cta-content">
                 <h2>Prêt à commencer ?</h2>
                 <p>Rejoignez des milliers d'utilisateurs qui font confiance à MarkEdit</p>
-                <a href="index.php" class="primary-button">
+                <a href="php/accueil.php" class="secondary-button">
                     <i class="fas fa-rocket"></i>
                     Lancer l'éditeur
                 </a>
@@ -194,7 +215,7 @@
                 <h3>Contact</h3>
                 <a href="mailto:korobaramahamane311@gmail.com">korobaramahamane311@gmail.com</a>
                 <div class="social-links">
-                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://github.com/Mahamane-Korobara" target="_blank"><i class="fab fa-github"></i></a>
                     <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
@@ -204,5 +225,7 @@
         </div>
     </footer>
     <script src="js/slideImage.js"></script>
+    <script type="module" src="../js/theme.js"></script> 
+    <script type="module" src="../js/gestionForm.js"></script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 // Constants
 const STORAGE_KEY = 'markdown_content';
 const TITLE_KEY = 'document_title';
-let isDark = localStorage.getItem('theme') === 'dark';
 
 // Éléments DOM
 const editor = document.getElementById('markdownInput');
@@ -9,7 +8,6 @@ const preview = document.getElementById('preview');
 const saveBtn = document.getElementById('saveBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const clearBtn = document.getElementById('clearBtn');
-const themeToggle = document.getElementById('themeToggle');
 const documentTitle = document.getElementById('documentTitle');
 const markdownTools = document.querySelectorAll('.markdown-tools button');
 const downloadMdBtn = document.getElementById('downloadMdBtn');
@@ -17,6 +15,7 @@ const downloadMdBtn = document.getElementById('downloadMdBtn');
 import { downloadPdf } from "./telechargementPDF.js";
 import { createLinkPopup } from "./image.js";
 import { parseMarkdown } from "./conversionMarkdown.js";
+import { applyTheme } from "./theme.js";
 
 /**
  * Met en place les écouteurs d'événements
@@ -62,8 +61,6 @@ function setupEventListeners() {
     // Effacement
     clearBtn.addEventListener('click', clearContent);
 
-    // Changement de thème
-    themeToggle.addEventListener('click', toggleTheme);
 
     // Outils Markdown
     markdownTools.forEach(button => {
@@ -169,29 +166,9 @@ function clearContent() {
     }
 }
 
-/**
- * Bascule entre les thèmes clair et sombre
- */
-function toggleTheme() {
-    isDark = !isDark;
-    applyTheme();
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-}
 
-/**
- * Applique le thème actuel
- */
-function applyTheme() {
-    document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    
-    // Change l'icône en fonction du thème
-    const themeIcon = themeToggle.querySelector('i');
-    if (isDark) {
-        themeIcon.className = 'fa-regular fa-moon icon';
-    } else {
-        themeIcon.className = 'fa-regular fa-sun icon';
-    }
-}
+
+
 
 /**
  * Insère du Markdown à la position du curseur

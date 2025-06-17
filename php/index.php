@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MarkEdit (éditeur Markdown)</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <!-- Lien CDN Font Awesome v6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -101,8 +101,9 @@
         </div>
     </main>
 
-    <script type="module" src="js/markdownParser.js"></script>
-    <script type="module" src="js/telechargementPDF.js"></script>
-    <script type="module" src="js/app.js"></script>
+    <script type="module" src="../js/markdownParser.js"></script>
+    <script type="module" src="../js/telechargementPDF.js"></script>
+    <script type="module" src="../js/app.js"></script>
+    <script type="module" src="../js/theme.js"></script>
 </body>
 </html>

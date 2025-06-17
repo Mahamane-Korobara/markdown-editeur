@@ -1,0 +1,304 @@
+/* Variables de couleur et de police */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #e0e0e0;
+    --accent-color: #e96449;
+    --accent-color-rgb: 233, 100, 73;
+    --toolbar-bg: #2f333d;
+    --toolbar-bg-rgb: 47, 51, 61;
+    --toolbar-text: #ffffff;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-track: #f1f1f1;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --transition-base: all 0.3s ease;
+    --gradient-primary: linear-gradient(135deg, var(--toolbar-bg), var(--accent-color));
+}
+
+/* Thème sombre */
+[data-theme="dark"] {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #252526;
+    --text-primary: #d4d4d4;
+    --text-secondary: #9d9d9d;
+    --border-color: #404040;
+    --accent-color: #e96449;
+    --toolbar-bg: #333842;
+    --toolbar-text: #ffffff;
+    --scrollbar-thumb: #454545;
+    --scrollbar-track: #2c2c2c;
+}
+
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header styles */
+.welcome-header {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--toolbar-bg), var(--accent-color));
+    color: var(--toolbar-text);
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
+    pointer-events: none;
+}
+
+.welcome-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--toolbar-text), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient 8s ease infinite;
+}
+
+.welcome-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Orientation choice section */
+.orientation-choice {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.orientation-card {
+    background: var(--bg-secondary);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.orientation-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(var(--accent-color-rgb), 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.orientation-card:hover::before {
+    opacity: 1;
+}
+
+.orientation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.2);
+}
+
+.orientation-icon {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.orientation-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.orientation-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.orientation-card .choose-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--accent-color), var(--toolbar-bg));
+}
+
+.orientation-card .choose-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.orientation-card .choose-btn:hover::before {
+    left: 100%;
+}
+
+/* Recent works section */
+.recent-works {
+    padding: 3rem 0;
+}
+
+.recent-works h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.work-card {
+    background: var(--bg-secondary);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--border-color);
+}
+
+.work-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(var(--accent-color-rgb), 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.work-card:hover::before {
+    opacity: 1;
+}
+
+.work-card:hover {
+    transform: translateY(-5px);
+}
+
+.work-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.work-content {
+    padding: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.work-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.work-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.work-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 0, 0, 0.02);
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border-color);
+    background: linear-gradient(to right, var(--bg-secondary), transparent);
+}
+
+.work-date {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.work-action {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.work-action:hover {
+    color: var(--toolbar-bg);
+}
+
+/* Animation du texte */
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .orientation-choice {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-header {
+        padding: 3rem 1rem;
+    }
+
+    .welcome-header h1 {
+        font-size: 2rem;
+    }
+}
