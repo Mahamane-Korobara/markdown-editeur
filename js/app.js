@@ -5,7 +5,6 @@ const TITLE_KEY = 'document_title';
 // Éléments DOM
 const editor = document.getElementById('markdownInput');
 const preview = document.getElementById('preview');
-const saveBtn = document.getElementById('saveBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const clearBtn = document.getElementById('clearBtn');
 const documentTitle = document.getElementById('documentTitle');
@@ -16,6 +15,7 @@ import { downloadPdf } from "./telechargementPDF.js";
 import { createLinkPopup } from "./image.js";
 import { parseMarkdown } from "./conversionMarkdown.js";
 import { applyTheme } from "./theme.js";
+import { handleShortcuts } from "./shortcuts.js";
 
 /**
  * Met en place les écouteurs d'événements
@@ -51,8 +51,6 @@ function setupEventListeners() {
     // Synchronisation du défilement
     editor.addEventListener('scroll', syncScroll);
 
-    // Sauvegarde
-    saveBtn.addEventListener('click', saveContent);
 
     // Téléchargement
     downloadBtn.addEventListener('click', downloadPdf);
@@ -117,14 +115,6 @@ function loadContent() {
         editor.value = saved;
         updatePreview();
     }
-}
-
-/**
- * Sauvegarde explicite du contenu
- */
-function saveContent() {
-    saveToLocalStorage();
-    showNotification('Contenu sauvegardé');
 }
 
 /**
@@ -275,27 +265,7 @@ function insertMarkdown(markdown) {
     updatePreview();
 }
 
-/**
- * Gère les raccourcis clavier
- */
-function handleShortcuts(e) {
-    if (e.ctrlKey || e.metaKey) {
-        switch(e.key.toLowerCase()) {
-            case 's':
-                e.preventDefault();
-                saveContent();
-                break;
-            case 'b':
-                e.preventDefault();
-                insertMarkdown('**texte**');
-                break;
-            case 'i':
-                e.preventDefault();
-                insertMarkdown('*texte*');
-                break;
-        }
-    }
-}
+
 
 /**
  * Affiche une notification temporaire
@@ -311,15 +281,7 @@ function showNotification(message) {
     }, 2000);
 }
 
-// Fonction pour échapper le HTML dans les blocs de code
-// function escapeHtml(unsafe) {
-//     return unsafe
-//         .replace(/&/g, "&amp;")
-//         .replace(/</g, "&lt;")
-//         .replace(/>/g, "&gt;")
-//         .replace(/"/g, "&quot;")
-//         .replace(/'/g, "&#039;");
-// }
+
 
 
 

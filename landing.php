@@ -18,7 +18,7 @@
             <a href="#fonctionalite">Fonctionnalités</a>
             <a href="#demo">Démonstration</a>
             <a href="#about">À propos</a>
-            <a href="php/accueil.php" class="cta-button">Lancer l'éditeur</a>
+            <a href="php/index.php" class="cta-button">Lancer l'éditeur</a>
 
             <button id="themeToggle" title="Changer le thème">
                <i class="fa-regular fa-sun icon"></i>
@@ -33,7 +33,7 @@
                 <h1>Transformez vos idées en contenu structuré</h1>
                 <p>Un éditeur Markdown moderne, intuitif et puissant pour tous vos besoins de rédaction</p>
                 <div class="cta-group">
-                    <a href="php/accueil.php" class="primary-button">
+                    <a href="php/index.php" class="primary-button">
                         <i class="fas fa-edit"></i>
                         Commencer à écrire
                     </a>
@@ -120,6 +120,13 @@
                     <p class="signup-description">Créez votre espace personnel et donnez vie à vos idées</p>
                     <div class="benefits">
                         <div class="benefit-item">
+                            <i class="fas fa-compass"></i>
+                            <div class="benefit-text">
+                                <h3>Choix d'orientation</h3>
+                                <p>Personnalisez votre expérience d'écriture avec des modèles et des styles adaptés à vos besoins</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
                             <i class="fas fa-history"></i>
                             <div class="benefit-text">
                                 <h3>Historique illimité</h3>
@@ -139,17 +146,17 @@
                     <div class="form-container">
                         <div id="signupForm" class="form-section active">
                             <h3>Rejoignez MarkEdit gratuitement</h3>
-                            <form action="#" class="animated-form">
+                            <form action="php/traitementInscription.php" method="post" class="animated-form">
                                 <div class="form-group">
-                                    <input type="text" placeholder="Votre nom" required>
+                                    <input type="text" name="nom" placeholder="Votre nom" required>
                                     <i class="fas fa-user"></i>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" placeholder="Votre email" required>
+                                    <input type="email" name="email" placeholder="Votre email" required>
                                     <i class="fas fa-envelope"></i>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" placeholder="Choisir un mot de passe" required>
+                                    <input type="password" name="motdepasse" placeholder="Choisir un mot de passe" required>
                                     <i class="fas fa-lock"></i>
                                 </div>
                                 <button type="submit" class="signup-button">
@@ -164,13 +171,13 @@
 
                         <div id="loginForm" class="form-section">
                             <h3>Connexion à MarkEdit</h3>
-                            <form action="#" class="animated-form">
+                            <form action="php/traitementConnexion.php" method="post" class="animated-form">
                                 <div class="form-group">
-                                    <input type="email" placeholder="Votre email" required>
+                                    <input type="email" name="email" placeholder="Votre email" required>
                                     <i class="fas fa-envelope"></i>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" placeholder="Votre mot de passe" required>
+                                    <input type="password" name="motdepasse" placeholder="Votre mot de passe" required>
                                     <i class="fas fa-lock"></i>
                                 </div>
                                 <button type="submit" class="signup-button">
@@ -191,7 +198,7 @@
             <div class="cta-content">
                 <h2>Prêt à commencer ?</h2>
                 <p>Rejoignez des milliers d'utilisateurs qui font confiance à MarkEdit</p>
-                <a href="php/accueil.php" class="secondary-button">
+                <a href="php/index.php" class="secondary-button">
                     <i class="fas fa-rocket"></i>
                     Lancer l'éditeur
                 </a>
@@ -225,7 +232,7 @@
         </div>
     </footer>
     <script src="js/slideImage.js"></script>
-    <script type="module" src="../js/theme.js"></script> 
-    <script type="module" src="../js/gestionForm.js"></script>
+    <script type="module" src="js/theme.js"></script> 
+    <script type="module" src="js/gestionForm.js"></script>
 </body>
 </html>
