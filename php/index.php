@@ -1,3 +1,34 @@
+<?php
+require_once 'config.php';
+session_start();
+
+// Récupération du document si un ID est fourni
+$document = null;
+if (isset($_GET['id'])) {
+    try {
+        $pdo = new PDO(
+            "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+            DB_USER,
+            DB_PASS,
+            [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]
+        );
+
+        $stmt = $pdo->prepare("
+            SELECT id, titre, contenu_markdown, contenu_html 
+            FROM documents 
+            WHERE id = :id
+        ");
+        $stmt->execute([':id' => $_GET['id']]);
+        $document = $stmt->fetch();
+    } catch (PDOException $e) {
+        // Gestion silencieuse de l'erreur
+        error_log("Erreur lors du chargement du document : " . $e->getMessage());
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,13 +39,23 @@
     <link rel="stylesheet" href="../css/shortcuts.css">
     <!-- Lien CDN Font Awesome v6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <!-- En-tête avec la barre d'outils -->
     <header class="toolbar">
         <div class="logo">
-            <h1>MarkEdit | <span id="documentTitle" class="document-title" contenteditable="true">Sans titre</span></h1>
+            <h1>MarkEdit | <span id="documentTitle" class="document-title" contenteditable="true"><?php echo isset($document) ? htmlspecialchars($document['titre']) : 'Sans titre'; ?></span></h1>
+            <input type="hidden" id="documentId" value="<?php echo isset($document) ? htmlspecialchars($document['id']) : ''; ?>">
+            <?php
+            $orientation = 'portrait';
+            if (isset($document) && isset($document['orientation'])) {
+                $orientation = $document['orientation'];
+            } elseif (isset($_GET['orientation']) && in_array($_GET['orientation'], ['portrait', 'landscape'])) {
+                $orientation = $_GET['orientation'];
+            }
+            ?>
+            <input type="hidden" id="documentOrientation" value="<?php echo htmlspecialchars($orientation); ?>">
         </div>
         <div class="actions">
             <button id="saveBtn" title="Enregistrer">
@@ -31,6 +72,9 @@
             </button>
             <button id="themeToggle" title="Changer le thème">
                <i class="fa-regular fa-sun icon"></i>
+            </button>
+            <button id="toggleView" title="Basculer l'affichage">
+                <i class="fa-solid fa-expand icon"></i>
             </button>
             <button id="shortcutsBtn" title="Raccourcis clavier">
                 <i class="fa-solid fa-keyboard icon"></i>
@@ -96,11 +140,11 @@
         <div class="editor-wrapper">
             <div class="editor-column">
                 <div class="column-header">Markdown</div>
-                <textarea id="markdownInput" class="editor" spellcheck="false"></textarea>
+                <textarea id="markdownInput" class="editor" spellcheck="false"><?php echo isset($document) ? htmlspecialchars($document['contenu_markdown']) : ''; ?></textarea>
             </div>
             <div class="preview-column">
                 <div class="column-header">Prévisualisation</div>
-                <div id="preview" class="preview"></div>
+                <div id="preview" class="preview"><?php echo isset($document) ? $document['contenu_html'] : ''; ?></div>
             </div>
         </div>
     </main>
@@ -180,5 +224,6 @@
     <script type="module" src="../js/telechargementPDF.js"></script>
     <script type="module" src="../js/app.js"></script>
     <script type="module" src="../js/theme.js"></script>
+    <script type="module" src="../js/toggleView.js"></script>
 </body>
 </html>

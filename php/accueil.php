@@ -22,7 +22,7 @@
                 </div>
                 <h3>Mode Portrait</h3>
                 <p>Parfait pour les documents longs et la lecture confortable sur les appareils mobiles.</p>
-                <a href="../index.php?orientation=portrait" class="choose-btn">Choisir Portrait</a>
+                <a href="nouveau_document.php?orientation=portrait" class="choose-btn">Choisir Portrait</a>
             </div>
 
             <div class="orientation-card">
@@ -31,50 +31,14 @@
                 </div>
                 <h3>Mode Paysage</h3>
                 <p>Idéal pour voir le contenu et l'aperçu côte à côte sur les grands écrans.</p>
-                <a href="../index.php?orientation=landscape" class="choose-btn">Choisir Paysage</a>
+                <a href="nouveau_document.php?orientation=landscape" class="choose-btn">Choisir Paysage</a>
             </div>
         </section>
 
         <section class="recent-works">
             <h2>Travaux Récents</h2>
-            <div class="works-grid">
-                <?php
-                // TODO: Remplacer par la vraie logique de récupération des travaux récents
-                $recent_works = [
-                    [
-                        'title' => 'Documentation Projet',
-                        'description' => 'Guide d\'utilisation complet pour notre nouvelle application',
-                        'date' => '15 juin 2025',
-                        'image' => '../images/work-1.jpg'
-                    ],
-                    [
-                        'title' => 'Notes de réunion',
-                        'description' => 'Résumé de la réunion hebdomadaire d\'équipe',
-                        'date' => '14 juin 2025',
-                        'image' => '../images/work-2.jpg'
-                    ],
-                    [
-                        'title' => 'Article de blog',
-                        'description' => 'Les meilleures pratiques en développement web',
-                        'date' => '13 juin 2025',
-                        'image' => '../images/work-3.jpg'
-                    ]
-                ];
-
-                foreach ($recent_works as $work) {
-                    echo '<div class="work-card">
-                        <img src="' . htmlspecialchars($work['image']) . '" alt="' . htmlspecialchars($work['title']) . '" class="work-image">
-                        <div class="work-content">
-                            <h3>' . htmlspecialchars($work['title']) . '</h3>
-                            <p>' . htmlspecialchars($work['description']) . '</p>
-                        </div>
-                        <div class="work-footer">
-                            <span class="work-date">' . htmlspecialchars($work['date']) . '</span>
-                            <a href="#" class="work-action">Ouvrir <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>';
-                }
-                ?>
+            <div class="works-grid" id="recentProjectsContainer">
+                <!-- Les projets récents seront injectés ici par JS -->
             </div>
         </section>
     </div>
@@ -93,6 +57,34 @@
                 }, 100 * index);
             });
         });
+
+        // Chargement dynamique des projets récents
+        fetch('../php/recent_projects.php')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('recentProjectsContainer');
+                if (data.success && data.projects.length > 0) {
+                    data.projects.forEach(project => {
+                        const card = document.createElement('div');
+                        card.className = 'work-card';
+                        card.innerHTML = `
+                            <div class="work-content">
+                                <h3>${project.titre ? project.titre : 'Sans titre'}</h3>
+                            </div>
+                            <div class="work-footer">
+                                <span class="work-date">${project.date_creation ? project.date_creation : ''}</span>
+                                <a href="index.php?id=${project.id}${project.orientation ? `&orientation=${project.orientation}` : ''}" target="_blank" class="work-action">Ouvrir <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p style="text-align:center;color:#888">Aucun projet récent trouvé.</p>';
+                }
+            })
+            .catch(() => {
+                document.getElementById('recentProjectsContainer').innerHTML = '<p style="text-align:center;color:#888">Erreur lors du chargement des projets.</p>';
+            });
     </script>
     <script type="module" src="../js/theme.js"></script>
 </body>

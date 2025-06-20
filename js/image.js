@@ -94,8 +94,14 @@ function createLinkPopup(isImage = false) {
                     const formData = new FormData();
                     formData.append('image', file);
                     
+                    // Récupération de l'ID du document actuel
+                    const documentId = document.getElementById('document_id')?.value;
+                    if (documentId) {
+                        formData.append('document_id', documentId);
+                    }
+                    
                     try {
-                        const response = await fetch('php/upload.php', {
+                        const response = await fetch('/editeur_markdown/php/upload.php', {
                             method: 'POST',
                             body: formData
                         });
@@ -103,16 +109,41 @@ function createLinkPopup(isImage = false) {
                         const result = await response.json();
                         if (result.success) {
                             url = result.path;
+                            if (result.warning) {
+                                console.warn(result.warning);
+                                showNotification(result.warning, 'warning');
+                            }
                         } else {
                             throw new Error(result.error);
                         }
                     } catch (error) {
                         console.error('Erreur lors de l\'upload:', error);
-                        showNotification('Erreur lors de l\'upload de l\'image');
+                        showNotification('Erreur lors de l\'upload de l\'image', 'error');
                         return;
                     }
                 } else {
                     url = popup.querySelector('#linkUrl').value;
+                    // Enregistrement de l'image distante dans la base si document_id présent
+                    const documentId = document.getElementById('document_id')?.value;
+                    if (documentId && url.startsWith('http')) {
+                        try {
+                            const formData = new FormData();
+                            formData.append('image_url', url);
+                            formData.append('document_id', documentId);
+                            const response = await fetch('/editeur_markdown/php/upload.php', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            const result = await response.json();
+                            if (result.success && result.image_id) {
+                                // Optionnel : afficher une notification de succès
+                            } else if (result.warning) {
+                                showNotification(result.warning, 'warning');
+                            }
+                        } catch (error) {
+                            console.error('Erreur lors de l\'enregistrement de l\'image distante:', error);
+                        }
+                    }
                 }
                 
                 markdown = `![${alt}](${url})<!-- dimensions:${width}:${height} -->`;
@@ -127,6 +158,20 @@ function createLinkPopup(isImage = false) {
             resolve(markdown);
         });
     });
+}
+
+
+
+// Fonction pour afficher une notification
+function showNotification(message, type = 'error') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
 }
 
 export { createLinkPopup };

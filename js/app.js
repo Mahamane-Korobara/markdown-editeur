@@ -10,12 +10,52 @@ const clearBtn = document.getElementById('clearBtn');
 const documentTitle = document.getElementById('documentTitle');
 const markdownTools = document.querySelectorAll('.markdown-tools button');
 const downloadMdBtn = document.getElementById('downloadMdBtn');
+const saveBtn = document.getElementById('saveBtn');
+const documentId = document.getElementById('documentId');
 
 import { downloadPdf } from "./telechargementPDF.js";
 import { createLinkPopup } from "./image.js";
 import { parseMarkdown } from "./conversionMarkdown.js";
 import { applyTheme } from "./theme.js";
 import { handleShortcuts } from "./shortcuts.js";
+
+/**
+ * Sauvegarde le document sur le serveur
+ */
+async function saveDocument() {
+    showNotification('Sauvegarde en cours...'); // Affiche immédiatement une notification
+    try {
+        const response = await fetch('../php/save_document.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: documentId.value,
+                titre: documentTitle.textContent,
+                contenu_markdown: editor.value,
+                contenu_html: preview.innerHTML
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showNotification('Document sauvegardé avec succès');
+            if (data.id && !documentId.value) {
+                documentId.value = data.id;
+                // Mettre à jour l'URL avec l'ID du document
+                const newUrl = new URL(window.location.href);
+                newUrl.searchParams.set('id', data.id);
+                window.history.pushState({}, '', newUrl);
+            }
+        } else {
+            showNotification('Erreur lors de la sauvegarde: ' + data.error, 'error');
+        }
+    } catch (error) {
+        showNotification('Erreur lors de la sauvegarde: ' + error.message, 'error');
+    }
+}
 
 /**
  * Met en place les écouteurs d'événements
@@ -67,6 +107,17 @@ function setupEventListeners() {
 
     // Raccourcis clavier
     editor.addEventListener('keydown', handleShortcuts);
+    
+    // Ajout de l'écouteur pour le bouton de sauvegarde
+    saveBtn.addEventListener('click', saveDocument);
+
+    // Ajout du raccourci clavier Ctrl+S / Cmd+S pour sauvegarder
+    document.addEventListener('keydown', async function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            await saveDocument();
+        }
+    });
 }
 
 /**
@@ -107,14 +158,57 @@ function saveToLocalStorage() {
 }
 
 /**
- * Charge le contenu depuis localStorage
+ * Charge le contenu du document (depuis la base, le localStorage ou vide)
  */
-function loadContent() {
+async function loadContent() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlId = urlParams.get('id');
+    const currentId = documentId.value;
+    const lastId = localStorage.getItem('last_document_id');
+
+    // Cas 1 : Un id est présent dans l'URL (document existant)
+    if (urlId) {
+        // Si l'id a changé, on ne garde pas le localStorage
+        if (lastId !== urlId) {
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(TITLE_KEY);
+        }
+        // On sauvegarde l'id courant
+        localStorage.setItem('last_document_id', urlId);
+        // Charger depuis la base via AJAX
+        try {
+            const response = await fetch(`../php/save_document.php?id=${encodeURIComponent(urlId)}`);
+            const data = await response.json();
+            if (data && data.success && data.document) {
+                editor.value = data.document.contenu_markdown || '';
+                documentTitle.textContent = data.document.titre || 'Sans titre';
+                updatePreview();
+                return;
+            }
+        } catch (e) {
+            // Si erreur, on met vide
+            editor.value = '';
+            documentTitle.textContent = 'Sans titre';
+            updatePreview();
+            return;
+        }
+    }
+
+    // Cas 2 : Pas d'id (nouveau document ou brouillon)
+    localStorage.setItem('last_document_id', '');
     const saved = localStorage.getItem(STORAGE_KEY);
+    const savedTitle = localStorage.getItem(TITLE_KEY);
     if (saved) {
         editor.value = saved;
-        updatePreview();
+    } else {
+        editor.value = '';
     }
+    if (savedTitle) {
+        documentTitle.textContent = savedTitle;
+    } else {
+        documentTitle.textContent = 'Sans titre';
+    }
+    updatePreview();
 }
 
 /**

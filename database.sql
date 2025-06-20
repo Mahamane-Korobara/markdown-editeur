@@ -20,6 +20,7 @@ CREATE TABLE documents (
     titre VARCHAR(255) NOT NULL,
     contenu_markdown TEXT,
     contenu_html TEXT,
+    orientation ENUM('portrait', 'landscape') DEFAULT 'portrait',
     date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
     date_modification DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

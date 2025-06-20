@@ -1,5 +1,6 @@
 // Fonction pour télécharger en PDF
 async function downloadPdf() {
+    console.log('downloadPdf appelé');
     // Créer une copie du contenu de prévisualisation pour le PDF
     const pdfContent = document.createElement('div');
     pdfContent.innerHTML = preview.innerHTML;
@@ -152,30 +153,32 @@ async function downloadPdf() {
         </style>
     `;
     
-    // Configuration pour html2pdf
+    // Détecter l'orientation du document
+    let orientation = 'portrait';
+    let docOrientation = null;
+    const orientationMeta = document.getElementById('documentOrientation');
+    if (orientationMeta) {
+        docOrientation = orientationMeta.value || orientationMeta.getAttribute('value');
+    }
+    if (docOrientation && (docOrientation === 'landscape' || docOrientation === 'portrait')) {
+        orientation = docOrientation;
+    } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('orientation')) {
+            orientation = urlParams.get('orientation') === 'landscape' ? 'landscape' : 'portrait';
+        }
+    }
+    // Configuration pour html2pdf (simplifiée pour éviter les conflits)
+    console.log('Orientation PDF:', orientation);
     const opt = {
-        margin: [15, 15], // Marges plus grandes
+        margin: [15, 15],
         filename: `${documentTitle.textContent.trim() || 'sans-titre'}.pdf`,
-        image: { 
-            type: 'jpeg', 
-            quality: 0.98,
-            windowWidth: 1920 // Pour une meilleure qualité des captures
-        },
-        html2canvas: { 
-            scale: 2,
-            useCORS: true,
-            letterRendering: true,
-            logging: false,
-            scrollY: -window.scrollY
-        },
-        jsPDF: { 
-            unit: 'mm', 
-            format: 'a4', 
-            orientation: 'portrait',
-            compress: true
+        jsPDF: {
+            unit: 'mm',
+            format: orientation === 'landscape' ? [297, 210] : 'a4',
+            orientation: orientation
         }
     };
-    
     // Créer un conteneur temporaire pour le PDF
     const tempContainer = document.createElement('div');
     tempContainer.innerHTML = styles + pdfContent.innerHTML;

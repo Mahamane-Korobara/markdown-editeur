@@ -490,3 +490,35 @@ img {
         z-index: 10;
     }
 }
+
+/* Styles pour l'orientation paysage */
+@media screen and (orientation: landscape) {
+    .editor-wrapper {
+        transition: all 0.3s ease;
+    }
+
+    .editor-wrapper.fullscreen-editor .editor-column {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .editor-wrapper.fullscreen-editor .preview-column {
+        display: none;
+    }
+
+    .editor-wrapper.fullscreen-preview .preview-column {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .editor-wrapper.fullscreen-preview .editor-column {
+        display: none;
+    }
+}
+
+/* Animation pour le toggle */
+.editor-column, .preview-column {
+    transition: all 0.3s ease;
+}
