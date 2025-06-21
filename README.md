@@ -56,10 +56,6 @@ MarkEdit est un éditeur Markdown moderne et élégant qui vous permet de créer
 
 Vous avez des idées pour améliorer MarkEdit ? N'hésitez pas à contribuer ! Toutes les suggestions sont les bienvenues.
 
-## 📜 Licence
-
-Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
-
 ---
 
 **MarkEdit** - Rendez vos documents magnifiques. ✨
