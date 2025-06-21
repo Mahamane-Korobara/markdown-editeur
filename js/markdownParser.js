@@ -1,3 +1,4 @@
+import { highlightAllCodeBlocks } from './highlight-init.js';
 /**
  * Règles de conversion Markdown vers HTML
  */
@@ -58,7 +59,7 @@ const markdownRules = [
     {
         pattern: /^```([a-z]*)\n([\s\S]*?)```$/gm,
         replace: (match, lang, code) => {
-            const language = lang ? ` class="language-${lang}"` : '';
+            const language = lang ? ` class="language-${lang}"` : ' class="language-plaintext"';
             return `<pre><code${language}>${escapeHtml(code.trimEnd())}</code></pre>`;
         }
     },
@@ -121,18 +122,13 @@ function handleLists(text) {
  */
 function parseMarkdown(markdown) {
     if (!markdown) return '';
-    
     let html = markdown + '\n';
-
-    // Conversion des listes en bloc
     html = handleLists(html);
-    
-    // Application des règles de conversion
     markdownRules.forEach(({ pattern, replace }) => {
         html = html.replace(pattern, replace);
     });
-    
     // Nettoyage final
+    setTimeout(() => highlightAllCodeBlocks(), 0); // Coloration syntaxique après rendu
     return html.trim();
 }
 

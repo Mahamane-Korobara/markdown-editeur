@@ -91,8 +91,8 @@
             <h2>Découvrez la puissance de MarkEdit</h2>
             <div class="demo-container">
                 <div class="demo-video">
-                    <video controls poster="images/demo-poster.jpg">
-                        <source src="videos/demo.mp4" type="video/mp4">
+                    <video controls poster="images/white.png">
+                        <source src="videos/markedit.webm" type="video/webm">
                         Votre navigateur ne supporte pas la lecture de vidéos.
                     </video>
                 </div>
@@ -223,7 +223,7 @@
                 <a href="mailto:korobaramahamane311@gmail.com">korobaramahamane311@gmail.com</a>
                 <div class="social-links">
                     <a href="https://github.com/Mahamane-Korobara" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.linkedin.com/in/korobara-mahamane-9880a7298/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </div>

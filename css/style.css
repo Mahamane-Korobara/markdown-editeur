@@ -1,3 +1,14 @@
+/* Correction forte pour la numérotation des listes ordonnées dans la prévisualisation */
+.preview ol {
+    list-style-type: decimal !important;
+    counter-reset: list-item;
+    margin-left: 2em;
+    padding-left: 0;
+}
+.preview ol > li {
+    display: list-item;
+    list-style-type: decimal !important;
+}
 /* Variables CSS pour le thème */
 :root {
     --bg-primary: #ffffff;
@@ -345,7 +356,8 @@ button:hover {
     margin: 1rem 0;
     border-radius: 4px;
     overflow-x: auto;
-    line-height: 0.8rem;
+    line-height: 1.7;
+    font-size: 1.05rem;
 }
 
 /* Style spécifique pour le code à l'intérieur des blocs pre */
@@ -355,6 +367,8 @@ button:hover {
     border-radius: 0;
     display: block;
     width: 100%;
+    font-size: inherit;
+    line-height: inherit;
 }
 
 /* Styles de la scrollbar pour les blocs de code */
@@ -521,4 +535,92 @@ img {
 /* Animation pour le toggle */
 .editor-column, .preview-column {
     transition: all 0.3s ease;
+}
+
+/* Styles pour la version mobile (< 768px) */
+@media screen and (max-width: 768px) {
+    /* Ajustement de la toolbar principale */
+    .toolbar {
+        position: relative;
+        padding: 0.5rem;
+    }
+
+    /* Réorganisation des actions en bas */
+    .actions {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--toolbar-bg);
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        z-index: 1000;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Ajustement des boutons d'action pour le mobile */
+    .actions button {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+
+    /* Barre d'outils markdown en sidebar */
+    .markdown-tools {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3rem;
+        flex-direction: column;
+        background-color: var(--bg-secondary);
+        padding: 0.5rem;
+        overflow-y: auto;
+        z-index: 900;
+        margin-top: 3.1rem; /* Espace pour la toolbar */
+        margin-bottom: 3rem; /* Espace pour la barre d'actions */
+    }
+
+    .markdown-tools button {
+        width: 2.2rem;
+        height: 2.2rem;
+        padding: 0.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Ajustement du conteneur principal */
+    .editor-container {
+        margin-left: 3rem; /* Espace pour la sidebar */
+        margin-bottom: 3.5rem; /* Espace pour la barre d'actions */
+        height: calc(100vh - 7rem); /* Hauteur ajustée pour toolbar et actions */
+    }
+
+    /* Adaptation du mode édition/prévisualisation */
+    .editor-wrapper.fullscreen-editor .preview-column,
+    .editor-wrapper.fullscreen-preview .editor-column {
+        display: none;
+    }
+
+    .editor-wrapper.fullscreen-editor .editor-column,
+    .editor-wrapper.fullscreen-preview .preview-column {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* Ajustements pour les très petits écrans */
+@media screen and (max-width: 480px) {
+    .actions {
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+
+    .actions button {
+        width: 2rem;
+        height: 2rem;
+    }
 }
